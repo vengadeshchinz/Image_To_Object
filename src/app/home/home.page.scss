@@ -1,0 +1,613 @@
+// ─── Layout Shell ─────────────────────────────────────────────────────────────
+
+.home-content {
+  --background: #0a0a0c;
+  overflow: hidden;
+}
+
+.app-layout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+// ─── Glass Card ────────────────────────────────────────────────────────────────
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+// ─── Left Panel ────────────────────────────────────────────────────────────────
+
+.left-panel {
+  width: 20%;
+  min-width: 220px;
+  max-width: 320px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: rgba(15, 15, 22, 0.8);
+  backdrop-filter: blur(24px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease;
+  overflow: visible;
+  z-index: 10;
+
+  &.collapsed {
+    width: 0;
+    min-width: 0;
+    border-right-color: transparent;
+    overflow: visible;
+
+    .left-content {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  .left-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 220px;
+    transition: opacity 0.2s ease;
+
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+    }
+  }
+}
+
+// Toggle tab — left panel (appears on right edge of panel)
+.left-toggle {
+  position: absolute;
+  right: -36px;
+  top: 20px;
+  width: 36px;
+  height: 44px;
+  background: rgba(30, 30, 44, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ion-color-primary, #667eea);
+  z-index: 20;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(50, 50, 70, 0.95);
+  }
+
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+// ─── Section Titles ────────────────────────────────────────────────────────────
+
+.panel-section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+
+  ion-icon {
+    font-size: 14px;
+  }
+
+  span {
+    flex: 1;
+  }
+
+  .reupload-btn {
+    --color: rgba(255, 255, 255, 0.35);
+    --padding-start: 0;
+    --padding-end: 0;
+    height: 20px;
+    font-size: 18px;
+    margin: 0;
+
+    &:hover {
+      --color: #667eea;
+    }
+  }
+
+  &.recent-title {
+    margin-top: 2px;
+  }
+}
+
+// ─── Upload Card ───────────────────────────────────────────────────────────────
+
+.upload-card {
+  padding: 16px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .upload-icon {
+    font-size: 40px;
+    color: #667eea;
+    margin-bottom: 10px;
+  }
+
+  .upload-hint {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0 0 4px;
+  }
+
+  .upload-sub {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 11px;
+    margin: 0;
+  }
+}
+
+// ─── Image Preview Block ───────────────────────────────────────────────────────
+
+.image-preview-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .thumb {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+    max-height: 140px;
+    display: block;
+  }
+
+  .progress-block {
+    .prog-bar {
+      --background: rgba(255, 255, 255, 0.1);
+      --progress-background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 6px;
+      height: 6px;
+      margin-bottom: 6px;
+    }
+
+    .prog-text {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 12px;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .spin {
+        animation: spin 1.4s linear infinite;
+        font-size: 14px;
+        color: #667eea;
+      }
+    }
+  }
+
+  .error-block {
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.25);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+
+    ion-icon {
+      color: #f44336;
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    p {
+      color: #f44336;
+      font-size: 12px;
+      margin: 0;
+    }
+  }
+
+  .action-row {
+    margin-top: 4px;
+  }
+
+  .preview-btn {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --border-radius: 10px;
+    --box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+    font-weight: 600;
+    height: 42px;
+  }
+
+  .reset-btn {
+    --border-color: rgba(255, 255, 255, 0.2);
+    --color: rgba(255, 255, 255, 0.6);
+    --border-radius: 10px;
+    height: 36px;
+  }
+}
+
+// ─── Recent Projects ───────────────────────────────────────────────────────────
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(102, 126, 234, 0.12);
+    border-color: rgba(102, 126, 234, 0.3);
+    transform: translateX(2px);
+
+    .recent-overlay {
+      opacity: 1;
+    }
+  }
+
+  .recent-thumb {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .recent-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(102, 126, 234, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+
+      ion-icon {
+        color: #fff;
+        font-size: 20px;
+      }
+    }
+  }
+
+  .recent-info {
+    flex: 1;
+    min-width: 0;
+
+    .recent-name {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 12px;
+      font-weight: 500;
+      margin: 0 0 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .recent-date {
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 11px;
+      margin: 0;
+    }
+  }
+}
+
+// ─── Center Canvas ─────────────────────────────────────────────────────────────
+
+.canvas-area {
+  flex: 1;
+  position: relative;
+  background: radial-gradient(circle at center, #12122a 0%, #0a0a0c 100%);
+  overflow: hidden;
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+
+    &.hidden {
+      display: none;
+    }
+  }
+}
+
+.canvas-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px;
+  text-align: center;
+
+  .placeholder-icon {
+    font-size: 80px;
+    color: rgba(102, 126, 234, 0.25);
+  }
+
+  h2 {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.6;
+    max-width: 280px;
+  }
+}
+
+// ─── Right Panel (Controls) ────────────────────────────────────────────────────
+
+.right-panel {
+  width: 260px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: rgba(15, 15, 22, 0.8);
+  backdrop-filter: blur(24px);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease;
+  overflow: visible;
+  z-index: 10;
+
+  &.collapsed {
+    width: 0;
+    border-left-color: transparent;
+    overflow: visible;
+
+    .right-content {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  .right-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 260px;
+    transition: opacity 0.2s ease;
+
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+    }
+  }
+}
+
+// Toggle tab — right panel (appears on left edge of panel)
+.right-toggle {
+  position: absolute;
+  left: -36px;
+  top: 20px;
+  width: 36px;
+  height: 44px;
+  background: rgba(30, 30, 44, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ion-color-primary, #667eea);
+  z-index: 20;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(50, 50, 70, 0.95);
+  }
+
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+// ─── Controls ──────────────────────────────────────────────────────────────────
+
+.ctrl-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  ion-button {
+    --border-radius: 10px;
+    height: 40px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .export-btn {
+    --background: linear-gradient(135deg, #667eea 0%, #9000ff 100%);
+    --box-shadow: 0 4px 14px rgba(106, 0, 255, 0.3);
+  }
+}
+
+.ctrl-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ctrl-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  ion-label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 500;
+  }
+
+  &.slider-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+
+    ion-range {
+      width: 100%;
+      padding: 0;
+      --bar-background: rgba(255, 255, 255, 0.1);
+      --bar-background-active: #667eea;
+      --knob-background: #fff;
+      --knob-size: 14px;
+    }
+  }
+}
+
+// ─── Stats Block ───────────────────────────────────────────────────────────────
+
+.stats-block {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: auto;
+
+  .stats-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    span:first-child {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    span:last-child {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      font-family: monospace;
+    }
+  }
+}
+
+// ─── Animations ────────────────────────────────────────────────────────────────
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ─── Mobile ────────────────────────────────────────────────────────────────────
+
+@media (max-width: 768px) {
+  .left-panel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 50;
+    min-width: 240px;
+    width: 240px;
+
+    &.collapsed {
+      width: 0;
+      min-width: 0;
+    }
+  }
+
+  .right-panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 50;
+    width: 240px;
+
+    &.collapsed {
+      width: 0;
+    }
+  }
+}

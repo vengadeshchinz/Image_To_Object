@@ -1,0 +1,95 @@
+<ion-header [translucent]="true">
+    <ion-toolbar color="dark">
+        <ion-buttons slot="start">
+            <ion-button (click)="goBack()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Export Model</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="export-content">
+    <div class="export-container">
+        <!-- File Name -->
+        <div class="section glass-panel">
+            <h2>File Name</h2>
+            <ion-item lines="none" class="input-item">
+                <ion-input [(ngModel)]="exportOptions.fileName" placeholder="Enter file name" type="text">
+                </ion-input>
+            </ion-item>
+        </div>
+
+        <!-- Format Selection -->
+        <div class="section glass-panel">
+            <h2>Export Format</h2>
+            <ion-radio-group [(ngModel)]="exportOptions.format">
+                <div class="format-grid">
+                    <div *ngFor="let format of formats" class="format-card"
+                        [class.selected]="exportOptions.format === format.value">
+                        <ion-radio [value]="format.value" labelPlacement="end">
+                            <div class="format-content">
+                                <ion-icon [name]="format.icon" class="format-icon"></ion-icon>
+                                <div class="format-info">
+                                    <div class="format-label">{{ format.label }}</div>
+                                    <div class="format-description">{{ format.description }}</div>
+                                </div>
+                            </div>
+                        </ion-radio>
+                    </div>
+                </div>
+            </ion-radio-group>
+        </div>
+
+        <!-- Quality Settings -->
+        <div class="section glass-panel">
+            <h2>Quality</h2>
+            <ion-segment [(ngModel)]="exportOptions.quality" mode="md">
+                <ion-segment-button *ngFor="let quality of qualities" [value]="quality.value">
+                    <ion-label>{{ quality.label }}</ion-label>
+                </ion-segment-button>
+            </ion-segment>
+        </div>
+
+        <!-- Texture Options -->
+        <div class="section glass-panel">
+            <h2>Texture Options</h2>
+
+            <div class="option-row">
+                <ion-label>Include Textures</ion-label>
+                <ion-toggle [(ngModel)]="exportOptions.includeTextures"></ion-toggle>
+            </div>
+
+            <div class="option-row" *ngIf="exportOptions.includeTextures">
+                <ion-label>Texture Resolution</ion-label>
+                <ion-select [(ngModel)]="exportOptions.textureResolution" interface="popover">
+                    <ion-select-option *ngFor="let res of textureResolutions" [value]="res">
+                        {{ res }}px
+                    </ion-select-option>
+                </ion-select>
+            </div>
+
+            <div class="option-row">
+                <ion-label>Compress</ion-label>
+                <ion-toggle [(ngModel)]="exportOptions.compress"></ion-toggle>
+            </div>
+
+            <div class="option-row" *ngIf="exportOptions.format === 'stl'">
+                <ion-label>Binary Format</ion-label>
+                <ion-toggle [(ngModel)]="exportOptions.binary"></ion-toggle>
+            </div>
+        </div>
+
+        <!-- Export Button -->
+        <div class="export-button-container">
+            <ion-button expand="block" size="large" (click)="exportModel()" [disabled]="isExporting || !meshData"
+                class="export-button">
+                <ion-icon slot="start" name="download-outline"></ion-icon>
+                {{ isExporting ? 'Exporting...' : 'Export Model' }}
+            </ion-button>
+
+            <ion-progress-bar *ngIf="isExporting" [value]="exportProgress / 100" class="export-progress">
+            </ion-progress-bar>
+        </div>
+    </div>
+</ion-content>

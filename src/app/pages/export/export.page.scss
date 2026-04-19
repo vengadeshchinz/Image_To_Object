@@ -1,0 +1,162 @@
+.export-content {
+    --background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+}
+
+.export-container {
+    padding: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.section {
+    margin-bottom: 24px;
+
+    h2 {
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 16px 0;
+    }
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.input-item {
+    --background: rgba(255, 255, 255, 0.05);
+    --border-radius: 12px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+
+    ion-input {
+        --color: #fff;
+        --placeholder-color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+.format-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+}
+
+.format-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(102, 126, 234, 0.5);
+    }
+
+    &.selected {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+        border-color: #667eea;
+        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+    }
+
+    ion-radio {
+        width: 100%;
+    }
+
+    .format-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .format-icon {
+        font-size: 32px;
+        color: #667eea;
+    }
+
+    .format-info {
+        flex: 1;
+    }
+
+    .format-label {
+        color: #fff;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    .format-description {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 12px;
+    }
+}
+
+ion-segment {
+    --background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 4px;
+
+    ion-segment-button {
+        --color: rgba(255, 255, 255, 0.6);
+        --color-checked: #fff;
+        --indicator-color: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        --border-radius: 8px;
+        min-height: 40px;
+    }
+}
+
+.option-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    ion-label {
+        color: #fff;
+        font-weight: 500;
+    }
+
+    ion-toggle {
+        --background: rgba(255, 255, 255, 0.1);
+        --background-checked: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        --handle-background: #fff;
+    }
+
+    ion-select {
+        --placeholder-color: rgba(255, 255, 255, 0.5);
+        color: #667eea;
+        font-weight: 600;
+    }
+}
+
+.export-button-container {
+    margin-top: 32px;
+
+    .export-button {
+        --background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        --background-hover: linear-gradient(90deg, #764ba2 0%, #667eea 100%);
+        --border-radius: 12px;
+        --box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+        font-weight: 600;
+        height: 56px;
+        margin-bottom: 12px;
+    }
+
+    .export-progress {
+        --background: rgba(255, 255, 255, 0.1);
+        --progress-background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        border-radius: 8px;
+        height: 8px;
+    }
+}

@@ -1,0 +1,120 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>3D Viewer</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToExport()">
+        <ion-icon name="download-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="viewer-content">
+  <div class="main-layout" [class.panel-collapsed]="isPanelCollapsed">
+    <!-- 3D Canvas -->
+    <div class="canvas-container" [class.full-width]="isPanelCollapsed">
+      <canvas #canvas></canvas>
+    </div>
+
+    <!-- Right Panels -->
+    <div class="side-panel" [class.collapsed]="isPanelCollapsed">
+      <!-- Toggle Button -->
+      <div class="panel-toggle" (click)="togglePanel()">
+        <ion-icon [name]="isPanelCollapsed ? 'chevron-forward' : 'chevron-back'"></ion-icon>
+      </div>
+
+      <div class="panel-content scrollable-panel">
+        <div class="panel-header">
+          <h2>Controls</h2>
+        </div>
+
+        <!-- Actions -->
+        <div class="panel-actions">
+          <ion-button expand="block" (click)="goToExport()" color="primary" class="export-btn">
+            <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
+            Export Model
+          </ion-button>
+
+          <ion-button expand="block" (click)="resetCamera()" fill="outline" size="small">
+            <ion-icon slot="start" name="refresh-outline"></ion-icon>
+            Reset View
+          </ion-button>
+        </div>
+
+        <!-- Controls Group -->
+        <div class="controls-group">
+          <div class="control-item">
+            <ion-label>Wireframe</ion-label>
+            <ion-toggle [(ngModel)]="showWireframe" (ionChange)="toggleWireframe()"></ion-toggle>
+          </div>
+
+          <div class="control-item">
+            <ion-label>Grid</ion-label>
+            <ion-toggle [(ngModel)]="showGrid" (ionChange)="toggleGrid()"></ion-toggle>
+          </div>
+
+          <div class="control-item">
+            <ion-label>Auto-Rotate</ion-label>
+            <ion-toggle [(ngModel)]="autoRotate" (ionChange)="toggleAutoRotate()"></ion-toggle>
+          </div>
+
+          <div class="control-item slider-item">
+            <ion-label>Lighting</ion-label>
+            <ion-range [(ngModel)]="lightingIntensity" min="0" max="2" step="0.1" (ionChange)="updateLighting()">
+            </ion-range>
+          </div>
+
+          <div class="control-item slider-item">
+            <ion-label>Depth</ion-label>
+            <ion-range [(ngModel)]="depthIntensity" min="0.1" max="3" step="0.1" (ionChange)="updateDepth()">
+            </ion-range>
+          </div>
+
+          <div class="control-item slider-item">
+            <ion-label>Masking</ion-label>
+            <ion-range [(ngModel)]="maskThreshold" min="0" max="1" step="0.05" (ionChange)="updateReconstruction()">
+            </ion-range>
+          </div>
+
+          <div class="control-item">
+            <ion-label>Invert Depth</ion-label>
+            <ion-toggle [(ngModel)]="invertDepth" (ionChange)="updateReconstruction()"></ion-toggle>
+          </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="stats-section" [class.collapsed]="isStatsCollapsed">
+          <div class="section-header" (click)="toggleStats()">
+            <h3>Statistics</h3>
+            <ion-icon [name]="isStatsCollapsed ? 'chevron-down' : 'chevron-up'"></ion-icon>
+          </div>
+
+          <div class="stats-content" *ngIf="statistics">
+            <div class="stats-inner">
+              <div class="stat-row">
+                <span class="label">Vertices</span>
+                <span class="value">{{ statistics.vertices | number }}</span>
+              </div>
+              <div class="stat-row">
+                <span class="label">Faces</span>
+                <span class="value">{{ statistics.faces | number }}</span>
+              </div>
+              <div class="stat-row" *ngIf="statistics.dimensions">
+                <span class="label">Volume</span>
+                <span class="value">
+                  {{ statistics.dimensions.width.toFixed(2) }}×{{ statistics.dimensions.height.toFixed(2) }}×{{
+                  statistics.dimensions.depth.toFixed(2) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

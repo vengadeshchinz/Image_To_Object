@@ -1,0 +1,7 @@
+{
+  "name": "img2obj",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

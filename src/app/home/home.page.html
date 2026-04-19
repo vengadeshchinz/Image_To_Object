@@ -1,0 +1,199 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title>Image to 3D</ion-title>
+    <ion-buttons slot="end" *ngIf="showViewer">
+      <ion-button (click)="goToExport()" title="Export">
+        <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="reset()" title="New Image">
+        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="home-content">
+  <div class="app-layout">
+
+    <!-- ── LEFT PANEL (Upload / Recent) ─────────────────────────────── -->
+    <div class="left-panel" [class.collapsed]="isLeftPanelCollapsed">
+
+      <!-- Tab to open/close left panel -->
+      <div class="left-toggle" (click)="toggleLeftPanel()" title="Toggle upload panel">
+        <ion-icon [name]="isLeftPanelCollapsed ? 'chevron-forward' : 'chevron-back'"></ion-icon>
+      </div>
+
+      <div class="left-content">
+        <div class="panel-section-title">
+          <ion-icon name="cloud-upload-outline"></ion-icon>
+          <span>Upload</span>
+          <ion-button *ngIf="uploadedImage" size="small" fill="clear" (click)="triggerFileInput()" class="reupload-btn"
+            title="Upload new">
+            <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+          </ion-button>
+        </div>
+
+        <!-- Hidden file input — always present for ViewChild -->
+        <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" style="display:none">
+
+        <!-- Upload Card -->
+        <div class="upload-card glass-card" (click)="triggerFileInput()" *ngIf="!uploadedImage && !isProcessing">
+          <ion-icon name="image-outline" class="upload-icon"></ion-icon>
+          <p class="upload-hint">Click to select image</p>
+          <p class="upload-sub">JPG · PNG · WebP</p>
+        </div>
+
+        <!-- Image Preview + Processing -->
+        <div class="image-preview-block" *ngIf="uploadedImage">
+          <img [src]="uploadedImage.preview" class="thumb" alt="Uploaded">
+
+          <!-- Progress -->
+          <div *ngIf="isProcessing" class="progress-block">
+            <ion-progress-bar [value]="processingProgress.progress / 100" class="prog-bar"></ion-progress-bar>
+            <p class="prog-text">
+              <ion-icon name="sync-outline" class="spin"></ion-icon>
+              {{ processingProgress.message }}
+            </p>
+          </div>
+
+          <!-- Error -->
+          <div *ngIf="hasError" class="error-block">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <p>{{ processingProgress.error }}</p>
+          </div>
+
+          <!-- Preview / Reload Button -->
+          <div class="action-row" *ngIf="isComplete">
+            <ion-button expand="block" (click)="previewModel()" class="preview-btn">
+              <ion-icon slot="start" name="cube-outline"></ion-icon>
+              {{ showViewer ? 'Reload Model' : 'Preview 3D Model' }}
+            </ion-button>
+          </div>
+
+
+        </div>
+
+        <!-- Recent Projects -->
+        <div class="recent-block" *ngIf="recentProjects.length > 0 && !isProcessing">
+          <div class="panel-section-title recent-title">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>Recent</span>
+          </div>
+          <div class="recent-list">
+            <div *ngFor="let project of recentProjects" class="recent-item glass-card" (click)="openProject(project)">
+              <div class="recent-thumb">
+                <img [src]="project.imagePreview" alt="Recent">
+                <div class="recent-overlay">
+                  <ion-icon name="cube-outline"></ion-icon>
+                </div>
+              </div>
+              <div class="recent-info">
+                <p class="recent-name">{{ project.name }}</p>
+                <p class="recent-date">{{ project.timestamp | date:'shortDate' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CENTER: 3D CANVAS ─────────────────────────────────────────── -->
+    <div class="canvas-area">
+      <!-- Placeholder when no model loaded -->
+      <div class="canvas-placeholder" *ngIf="!showViewer">
+        <ion-icon name="cube-outline" class="placeholder-icon"></ion-icon>
+        <h2>No Model Loaded</h2>
+        <p>Upload an image on the left to generate a 3D model</p>
+      </div>
+      <canvas #canvas [class.hidden]="!showViewer"></canvas>
+    </div>
+
+    <!-- ── RIGHT PANEL (Controls) ────────────────────────────────────── -->
+    <div class="right-panel" [class.collapsed]="isRightPanelCollapsed" *ngIf="showViewer">
+
+      <!-- Tab to open/close right panel -->
+      <div class="right-toggle" (click)="toggleRightPanel()" title="Toggle controls">
+        <ion-icon [name]="isRightPanelCollapsed ? 'chevron-back' : 'chevron-forward'"></ion-icon>
+      </div>
+
+      <div class="right-content">
+        <div class="panel-section-title">
+          <ion-icon name="settings-outline"></ion-icon>
+          <span>Controls</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="ctrl-actions">
+          <ion-button expand="block" (click)="goToExport()" class="export-btn">
+            <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
+            Export
+          </ion-button>
+          <ion-button expand="block" fill="outline" size="small" (click)="resetCamera()">
+            <ion-icon slot="start" name="refresh-outline"></ion-icon>
+            Reset View
+          </ion-button>
+        </div>
+
+        <!-- Toggles -->
+        <div class="ctrl-group">
+          <div class="ctrl-item">
+            <ion-label>Wireframe</ion-label>
+            <ion-toggle [(ngModel)]="showWireframe" (ionChange)="toggleWireframe()"></ion-toggle>
+          </div>
+          <div class="ctrl-item">
+            <ion-label>Grid</ion-label>
+            <ion-toggle [(ngModel)]="showGrid" (ionChange)="toggleGrid()"></ion-toggle>
+          </div>
+          <div class="ctrl-item">
+            <ion-label>Auto-Rotate</ion-label>
+            <ion-toggle [(ngModel)]="autoRotate" (ionChange)="toggleAutoRotate()"></ion-toggle>
+          </div>
+          <div class="ctrl-item">
+            <ion-label>Invert Depth</ion-label>
+            <ion-toggle [(ngModel)]="invertDepth" (ionChange)="updateReconstruction()"></ion-toggle>
+          </div>
+        </div>
+
+        <!-- Sliders -->
+        <div class="ctrl-group">
+          <div class="ctrl-item slider-item">
+            <ion-label>Lighting</ion-label>
+            <ion-range [(ngModel)]="lightingIntensity" min="0" max="2" step="0.1"
+              (ionChange)="updateLighting()"></ion-range>
+          </div>
+          <div class="ctrl-item slider-item">
+            <ion-label>Depth</ion-label>
+            <ion-range [(ngModel)]="depthIntensity" min="0.1" max="3" step="0.1"
+              (ionChange)="updateDepth()"></ion-range>
+          </div>
+          <div class="ctrl-item slider-item">
+            <ion-label>Masking</ion-label>
+            <ion-range [(ngModel)]="maskThreshold" min="0" max="1" step="0.05"
+              (ionChange)="updateReconstruction()"></ion-range>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-block" *ngIf="statistics">
+          <p class="stats-label">STATISTICS</p>
+          <div class="stat-row">
+            <span>Vertices</span>
+            <span>{{ statistics.vertices | number }}</span>
+          </div>
+          <div class="stat-row">
+            <span>Faces</span>
+            <span>{{ statistics.faces | number }}</span>
+          </div>
+          <div class="stat-row" *ngIf="statistics.dimensions">
+            <span>Dimensions</span>
+            <span>
+              {{ statistics.dimensions.width.toFixed(1) }}×{{ statistics.dimensions.height.toFixed(1) }}×{{
+              statistics.dimensions.depth.toFixed(1) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

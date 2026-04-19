@@ -1,0 +1,150 @@
+// For information on how to create your own theme, please refer to:
+// https://ionicframework.com/docs/theming/
+
+/** Ionic CSS Variables **/
+:root {
+    /** Primary Colors - Vibrant Purple/Blue Gradient **/
+    --ion-color-primary: #667eea;
+    --ion-color-primary-rgb: 102, 126, 234;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #5a6fce;
+    --ion-color-primary-tint: #7589ec;
+
+    /** Secondary Colors - Deep Purple **/
+    --ion-color-secondary: #764ba2;
+    --ion-color-secondary-rgb: 118, 75, 162;
+    --ion-color-secondary-contrast: #ffffff;
+    --ion-color-secondary-contrast-rgb: 255, 255, 255;
+    --ion-color-secondary-shade: #68428f;
+    --ion-color-secondary-tint: #8460ab;
+
+    /** Tertiary Colors - Pink Gradient **/
+    --ion-color-tertiary: #f093fb;
+    --ion-color-tertiary-rgb: 240, 147, 251;
+    --ion-color-tertiary-contrast: #000000;
+    --ion-color-tertiary-contrast-rgb: 0, 0, 0;
+    --ion-color-tertiary-shade: #d381dd;
+    --ion-color-tertiary-tint: #f29efb;
+
+    /** Success **/
+    --ion-color-success: #4caf50;
+    --ion-color-success-rgb: 76, 175, 80;
+    --ion-color-success-contrast: #ffffff;
+    --ion-color-success-contrast-rgb: 255, 255, 255;
+    --ion-color-success-shade: #439a46;
+    --ion-color-success-tint: #5eb762;
+
+    /** Warning **/
+    --ion-color-warning: #ffc107;
+    --ion-color-warning-rgb: 255, 193, 7;
+    --ion-color-warning-contrast: #000000;
+    --ion-color-warning-contrast-rgb: 0, 0, 0;
+    --ion-color-warning-shade: #e0a800;
+    --ion-color-warning-tint: #ffca22;
+
+    /** Danger **/
+    --ion-color-danger: #f44336;
+    --ion-color-danger-rgb: 244, 67, 54;
+    --ion-color-danger-contrast: #ffffff;
+    --ion-color-danger-contrast-rgb: 255, 255, 255;
+    --ion-color-danger-shade: #d73a2f;
+    --ion-color-danger-tint: #f5574a;
+
+    /** Dark **/
+    --ion-color-dark: #1a1a2e;
+    --ion-color-dark-rgb: 26, 26, 46;
+    --ion-color-dark-contrast: #ffffff;
+    --ion-color-dark-contrast-rgb: 255, 255, 255;
+    --ion-color-dark-shade: #171728;
+    --ion-color-dark-tint: #313143;
+
+    /** Medium **/
+    --ion-color-medium: #989aa2;
+    --ion-color-medium-rgb: 152, 154, 162;
+    --ion-color-medium-contrast: #000000;
+    --ion-color-medium-contrast-rgb: 0, 0, 0;
+    --ion-color-medium-shade: #86888f;
+    --ion-color-medium-tint: #a2a4ab;
+
+    /** Light **/
+    --ion-color-light: #f4f5f8;
+    --ion-color-light-rgb: 244, 245, 248;
+    --ion-color-light-contrast: #000000;
+    --ion-color-light-contrast-rgb: 0, 0, 0;
+    --ion-color-light-shade: #d7d8da;
+    --ion-color-light-tint: #f5f6f9;
+
+    /** Background Colors **/
+    --ion-background-color: #0a0a0a;
+    --ion-background-color-rgb: 10, 10, 10;
+
+    --ion-text-color: #ffffff;
+    --ion-text-color-rgb: 255, 255, 255;
+
+    --ion-border-color: rgba(255, 255, 255, 0.1);
+
+    --ion-color-step-50: #1a1a1a;
+    --ion-color-step-100: #262626;
+    --ion-color-step-150: #333333;
+    --ion-color-step-200: #404040;
+    --ion-color-step-250: #4d4d4d;
+    --ion-color-step-300: #595959;
+    --ion-color-step-350: #666666;
+    --ion-color-step-400: #737373;
+    --ion-color-step-450: #808080;
+    --ion-color-step-500: #8c8c8c;
+    --ion-color-step-550: #999999;
+    --ion-color-step-600: #a6a6a6;
+    --ion-color-step-650: #b3b3b3;
+    --ion-color-step-700: #bfbfbf;
+    --ion-color-step-750: #cccccc;
+    --ion-color-step-800: #d9d9d9;
+    --ion-color-step-850: #e6e6e6;
+    --ion-color-step-900: #f2f2f2;
+    --ion-color-step-950: #ffffff;
+
+    /** Toolbar **/
+    --ion-toolbar-background: rgba(26, 26, 46, 0.95);
+    --ion-toolbar-border-color: rgba(255, 255, 255, 0.1);
+    --ion-toolbar-color: #ffffff;
+
+    /** Item **/
+    --ion-item-background: rgba(255, 255, 255, 0.05);
+    --ion-item-border-color: rgba(255, 255, 255, 0.1);
+
+    /** Card **/
+    --ion-card-background: rgba(255, 255, 255, 0.05);
+}
+
+/** Global Styles **/
+* {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+ion-content {
+    --background: transparent;
+}
+
+ion-toolbar {
+    --background: rgba(26, 26, 46, 0.95);
+    --border-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+ion-button {
+    --border-radius: 12px;
+    font-weight: 600;
+    text-transform: none;
+}
+
+ion-card {
+    --background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+}
